@@ -1,0 +1,205 @@
+%%% File    : seq_erlang.erl
+%%% Author  : Hans Svensson <hanssv@hanssv-ituniv>
+%%% Description : Solutions to first part of exercises
+%%% Created : 14 Sep 2009 by Hans Svensson <hanssv@hanssv-ituniv>
+
+-module(seq_erlang).
+-author('John@JOHN-PC').
+
+%-include_lib("eqc/include/eqc.hrl").
+-compile(export_all).
+-export([sum/1, mul/1, take_snd/1, fib/1,
+         eff_fib/1,
+         digitize/1, is_happy/1, all_happy/2,
+         expr_parse/1, expr_print/1, expr_eval/1
+         %%, expr_parse_2/1, expr_print_2/1, expr_eval_2/1
+        ]).
+
+%-type equation() :: {atom(), tuple(), tuple()}.
+ 
+%% sum
+sum(0) -> 0;
+sum(N) -> 
+    N + (sum(N - 1)).
+
+
+%% mul
+mul(1) -> 1;
+mul(N) -> 
+   N * (mul(N -1)).
+
+%% take_snd
+take_snd([])-> [];
+take_snd([{_, V}| T]) -> 
+    [V | take_snd(T)].
+
+%% Fibonacci
+fib(0) -> 1;
+fib(1) -> 1;
+%% Normal fib "Algorithm", i think this returns correctly!
+fib(N) when N > 1 -> fib(N - 1) + fib(N - 2).
+
+%% Efficient fib.
+eff_fib(0) -> 1;
+eff_fib(1) -> 1;
+eff_fib(N) when N > 1 -> 
+    fibby(N, 1, 1).
+
+fibby(2, Prev, Next) -> Prev + Next;
+fibby(N, Prev, Next) ->
+    fibby(N-1, Next, Prev + Next).
+
+%% Digitify a number
+%% Uses a recusrsive method to build the list,
+%% My initial attempt gave me the list in the wrong direction.
+
+digitize(0) -> [];
+digitize(N) when N > 0 -> digitize_Acc(N, []).
+%% Influenced from the accumilator example in the book and slides.
+digitize_Acc(0, Acc)-> Acc;
+digitize_Acc(N, Acc)->
+    digitize_Acc(N div 10, [N rem 10 | Acc]).
+
+%% is_happy
+is_happy(0) -> false;
+is_happy(1) -> true;
+%% Should only ever need one check, if 4 appears in the list at any point
+%% Number is therefor not a happy number.
+is_happy(4) -> false;
+is_happy(N) ->
+  is_happy(happy_sum([(X * X) || X <- digitize(N)])).
+%% This sums up the elements of a list.
+happy_sum([]) -> 0;
+happy_sum([H | T]) ->
+    H + happy_sum(T).
+
+%% all_happy
+%% Build a standard accumilator
+all_happy(N, M) ->
+    all_happy_acc(N -1, M, []).
+
+all_happy_acc(N, N, Acc) -> Acc;
+all_happy_acc(N, M, Acc) ->
+
+    case is_happy(M) of
+	true -> all_happy_acc(N, M-1, [M | Acc]);
+	false -> all_happy_acc(N, M-1, Acc)
+    end.
+
+%% Expressions
+
+%% A. Evaluate expressions
+expr_eval(Expr) -> eval_val(Expr).
+%% Expression pattern matches.
+eval_val({num, N}) -> N;
+eval_val({mul, N, M})-> eval_val(N) * eval_val(M);
+eval_val({plus, N, M})-> eval_val(N) + eval_val(M);
+eval_val({minus, N, M})-> eval_val(N) - eval_val(M).
+
+
+%% B. Pretty print expressions
+expr_print(Expr) -> make_list(Expr).
+    
+%% Convert the tuples to lists, and then recurse through the lists
+make_list({num, N}) -> integer_to_list(N);
+make_list({Ind, V1, V2}) -> lists:concat(
+			      ['(',
+			       make_list(V1),
+			       get_val(Ind),
+			       make_list(V2),
+			       ')']).
+
+%% Might be needed for converting the list members to
+%% The actual values that i want.
+get_val(mul)-> "*";
+get_val(minus)-> "-";
+get_val(plus)-> "+";
+get_val(N) -> N. 
+
+%% C. Parse expressions
+expr_parse(Str) -> parse(Str).
+
+parse([$( | T]) ->
+    parse(T, []);
+
+%% Noticed a bug where doubles come in reversed for some reason.
+%% Seems to be related to the side that is flipped
+parse(N) ->
+    {num, list_to_integer(N)}.
+
+%% Stripping, might rename this. ** Does it have to catch the end bracket, could be anything as if it's got
+%% and empty on its right side then it's at the end of the list anyway.
+
+parse([$) | []], Acc) ->
+    parse([], Acc);
+parse([H | T], Acc) ->
+    parse(T, [H | Acc]);
+parse([], Acc) ->
+    %% Going to try reversing the list here so that it keeps the numbers in
+    %% The correct order!
+    split(lists:reverse(Acc), []).
+
+
+%% Split it up, add parts on the right to the right list, left on the left list.
+%% If you get another left bracket, send it back to get the values from the inside.
+%% When an operator is hit, the left side is done and everything left on the right should be 
+
+split([H | Right], Left) when H > 41, H < 46 ->
+    
+
+    {indi(H), parse(Left), parse(Right)};
+
+split([H | T], Left) when H > 47, H < 58 ->
+    %% Reversing the list here because when i get doubles they're coming out backwards
+    %% Annoyingly this truncates 0's off some numbers, because it's read out such as:
+    %% 01 = 1, when it's meant to be 10.
+    split(T, lists:reverse([H | Left]));
+%% Bracket is found, indicating a nested expression.
+%% I should return just the expression and its parentheseees.
+split(T, Left) ->
+    par_finder(T, Left).
+
+%% Check there's a parenth' first and add one if so.
+par_finder([$( | T], Rem) ->
+    par_finder(T, 0, Rem).
+
+%% Traverse the inside loops until i reach the end, end is determined
+%% by the count of the inner loops.
+
+par_finder([H | T], Count, Rem) when Count >= 0 ->
+
+    case H of
+	$( -> par_finder(T, (Count + 1), [$(] ++ Rem);
+	$) -> par_finder(T, (Count - 1), [$)] ++ Rem);
+	H  -> par_finder(T, Count, [H | Rem])
+
+    end;
+%% This clause is met when we've reached the end of the current expression
+%% That we're trying to find.
+par_finder(T, N, Rem) when N =< 0 ->
+    %% Make sure to add the bracket that gets truncated off the end to the list again
+    %% Otherwise the lists will be off -> by one.
+    %% Reversing Rem to get the elements in the right order.
+    Rrem = lists:reverse(Rem),
+    split(T, [$(] ++ Rrem);
+par_finder([], _, Rem) ->
+    split([], Rem).
+
+indi($+) ->
+    plus;
+indi($-) ->
+    minus;
+indi($*) ->
+    mul.
+
+%% Advanced versions of expr
+%% expr_eval_2(_Expr) -> ok.
+
+%% expr_print_2(_Expr) -> ok.
+
+%% expr_parse_2(_Str) -> ok.
+
+
+
+
+

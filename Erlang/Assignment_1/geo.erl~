@@ -1,0 +1,14 @@
+%%% @author John <john@john-K55VD>
+%%% @copyright (C) 2013, John
+%%% @doc
+%%% Playing with geometry
+%%% @end
+%%% Created : 16 Sep 2013 by John <john@john-K55VD>
+
+-module(geo).
+
+-export([area/1]).
+
+
+
+

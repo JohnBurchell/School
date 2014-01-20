@@ -1,0 +1,12 @@
+%Temp calculator
+
+-module(temp).
+
+-export([f2c/1, c2f/1]).
+
+f2c(F)->
+    9 * F.
+
+c2f(C)->
+    5 * (C - 32).
+

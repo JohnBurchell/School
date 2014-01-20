@@ -1,0 +1,10 @@
+%%% @author John <john@john-K55VD>
+%%% @copyright (C) 2013, John
+%%% @doc
+%%% Sorting function testing from the lecture on the 16th of September.
+%%% @end
+%%% Created : 16 Sep 2013 by John <john@john-K55VD>
+
+-module(sorting).
+
+

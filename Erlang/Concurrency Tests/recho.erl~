@@ -1,0 +1,11 @@
+%%% @author John <john@john-K55VD>
+%%% @copyright (C) 2013, John
+%%% @doc
+%%% This is another small example of using messags to pass around
+%%% between functions, seems quite interesting!
+%%% @end
+%%% Created : 25 Sep 2013 by John <john@john-K55VD>
+
+-module(recho).
+
+

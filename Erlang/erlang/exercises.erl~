@@ -1,0 +1,8 @@
+%Weather calculator.
+
+-module(exercises).
+
+-execute([Fahrenheit/1]).
+
+f2c(Fahrenheit) ->
+    5 * (F- 32) = 9 * C.
