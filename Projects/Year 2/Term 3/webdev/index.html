@@ -1,0 +1,564 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+	
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
+		<script src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/jquery.effects.core.js"></script>
+		<script src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/jquery.effects.slide.js"></script>
+		<script src="js/jquery.zrssfeed.min.js" type="text/javascript"></script>
+		<script src="http://code.highcharts.com/stock/highstock.js"></script>
+    	
+		<link rel="stylesheet" type="text/css" href="css/layout.css" />
+		<link href="css/rss.css" rel="stylesheet" type="text/css" />
+
+		<title>Biggus Dickus</title>
+
+		<script type="text/javascript"> // Operate List switches and odd/even lists
+			function changeList(list) {
+				// SHOW ALL STOCKS
+				if (list==='stock_wrapper' && $("#stock_wrapper").is(":not(':visible')")) {
+					$("#rss_wrapper").hide();
+					$("#myStocks_wrapper").hide();
+					$("#market_selector").delay(200).show("slide",{direction: "left"}, 200);
+					$("#search_and_filter").delay(200).show("slide",{direction: "left"}, 200);
+					$("#stock_wrapper").delay(200).show("slide",{direction: "left"}, 200);
+				}
+				// SHOW MY STOCKS
+				else if  (list==='myStocks_wrapper' && $("#myStocks_wrapper").is(":not(':visible')")) {
+					var sync = populateMyStocks();
+					$("#rss_wrapper").hide();
+					$("#market_selector").hide();
+					$("#search_and_filter").hide();
+					$("#stock_wrapper").hide();
+					$("#myStocks_wrapper").delay(200).show("slide",{direction: "left"}, 200);
+				}
+				// SHOW RSS
+				else if  (list==='rss_wrapper' && $("#rss_wrapper").is(":not(':visible')")) {
+					var sync = getRSS();
+					$("#market_selector").hide();
+					$("#search_and_filter").hide();
+					$("#stock_wrapper").hide();
+					$("#myStocks_wrapper").hide();
+					$("#rss_wrapper").delay(200).show("slide",{direction: "left"}, 200);
+				}
+			}
+			function remove_odd_even(list) {
+				$("." + list).each(function() {
+					$(this).removeClass(list + "_odd");
+				});
+			}
+			function odd_even_list(list) {
+				$("." + list + ":visible:odd").addClass(list + "_odd");
+			}
+		</script>
+		
+		<script type="text/javascript"> // Operate stock list
+			$(document).ready(function () {
+				//getStocks("dax","€");
+				//getIndex("DAX","€");
+				whatMarket();
+			});
+			$.expr[":"].icontains = $.expr.createPseudo(function(arg) {
+    			return function( elem ) {
+        		return $(elem).text().toLowerCase().indexOf(arg.toLowerCase()) >= 0;
+    			};
+			});
+			function whatMarket() {
+				var market = $("#market_selector_box").val();
+				var curr = "";
+				var symbol = "";
+				if (market === "nasdaq") { curr = "$"; symbol = "IXIC"; }
+				else if (market === "lse") { curr = "£"; symbol = "LON:LSE"; }
+				else { curr = "€"; symbol = "DAX"; }
+				$("#alert_wrapper div").html("Please wait...<br/> Requesting index and stock data from " + market);
+				$("#alert_wrapper").animate({right:'10px'}, 200);
+				getStocks(market,symbol,curr);
+			}
+			function getStocks(market,symbol,curr) {
+				$.ajax({
+					url: 'http://83.254.83.56:8001/' + market + '_stocks/_design/latestData/_view/latestData',
+					type: 'get',
+					dataType: 'jsonp',
+					success: function (outerJSON) {
+						$("#stock_table tr").remove();
+						remove_odd_even("myStocks_object");
+						rows=outerJSON.rows;
+						$.each(rows, function(key,val) {
+							var color="black";
+							if (val.value.Data.ChangePercent < 0 ) {
+								color="#a92c28";
+							} else if (val.value.Data.ChangePercent === 0 ) {
+								color="orange";
+							} else {
+								color="#8eed5f";
+							}
+							$("#stock_table").append("<tr class=stock_object><td><table cellpadding=0 id=" + val.value.Symbol + ">" + 
+								"<tr class=stock_list_name>" +
+									"<td width=80px><a href=\"javascript:putMyStocks('" + val.value.Name + "','" + val.value.Symbol + "','" + market + "')\" class=stock_list_star /><b>" + val.value.Symbol + "</b></td>" + 
+									"<td colspan=2 width=100% onClick=\"javascript:getStockGraph('" + val.value.Symbol + "','" + curr + "', 'candle','" + market + "')\">" + val.value.Name + "</td>" + 
+								"</tr>" + 
+								"<tr class=stock_list_headers onClick=\"javascript:getStockGraph('" + val.value.Symbol + "','" + curr + "', 'candle','" + market + "')\">" + 
+									"<td>Last Trade</td>" + 
+									"<td width=120px>Change (%)</td>" +
+									"<td width=120px>Open</td>" + 
+								"</tr>" +
+								"<tr class=stock_list_data onClick=\"javascript:getStockGraph('" + val.value.Symbol + "','" + curr + "', 'candle','" + market + "')\">" +
+									"<td>" + curr + val.value.Data.Price + "</td>" + 
+									"<td style=\"color:" + color + ";\">" + val.value.Data.ChangePercent + "</td>" + 
+									"<td>" + curr + val.value.Data.Open + "</td>" + 
+								"</tr>" + 
+								"</table></td></tr>"
+								);
+						});
+						odd_even_list("stock_object");
+						getIndex(symbol,curr);
+					}
+				});
+			}
+			function show_only(val) {
+				remove_odd_even("stock_object");
+				$("#stock_table").hide("slide", { direction: "right" }, 200);
+				var items = $(".stock_object td table tr.stock_list_name td:nth-child(2)");
+				$.each(items, function(item) {
+					if ($(this).text().indexOf(val) !== 0) {
+						$(this).parent().parent().parent().parent().hide();
+					} else {
+						$(this).parent().parent().parent().parent().show();
+					}
+				});
+				$("#stock_table").show("slide", { direction: "left" }, 200);
+				odd_even_list("stock_object");
+			}
+			function filter(val) {
+				if (val == "") {
+					remove_odd_even("stock_object");
+					$(".stock_object").each(function() { $(this).show(); });
+					odd_even_list("stock_object");
+				} else {
+					remove_odd_even("stock_object");
+					var items = $(".stock_object td table tr.stock_list_name");
+					$.each(items, function(item) {
+							if ($(this).is(":icontains('" + val.toLowerCase() + "')")) {
+								$(this).parent().parent().parent().parent().show();
+							} else {
+								$(this).parent().parent().parent().parent().hide();
+							}
+						});
+					odd_even_list("stock_object");
+				}
+			}
+		</script>
+		
+		<script type="text/javascript"> // Operate my stocks list
+			function populateMyStocks() {
+				// get user from session or something
+				remove_odd_even("myStocks_object");
+				$("#myStocks_table tr").remove();
+				$.ajax({
+					url: 'http://83.254.83.56:8001/users/_design/user_info/_view/get_symbols/?key="patrik"',
+					type: 'get',
+					dataType: 'jsonp',
+					success: function (json) {
+						var row = json.rows[0];
+						$.each(row.value, function(key,val) {
+							$.ajax({
+								url: 'http://83.254.83.56:8001/' + val.Market + '_stocks/_design/latestData/_view/latestData/?key="' + val.Symbol +'"',
+								type: 'get',
+								dataType: 'jsonp',
+								success: function (json) {
+									var rows = json.rows;
+									$.each(rows, function(key2,val2) {
+										var color="black";
+										if (val2.value.Data.ChangePercent < 0 ) { color="#a92c28"; }
+										else if (val2.value.Data.ChangePercent === 0 ) { color="orange"; }
+										else { color="#8eed5f"; }
+										var curr = "";
+										if (val.Market === "nasdaq") { curr = "$"; }
+										else if (val.Market === "lse") { curr = "£"; }
+										else { curr = "€"; }
+										$("#myStocks_table").append("<tr class=myStocks_object><td><table cellpadding=0 id=" + val2.value.Symbol + ">" + 
+										"<tr class=myStocks_list_name>" +
+											"<td width=80px><a href=\"javascript:removeMyStocks('" + val2.value.Name + "','" + val2.value.Symbol + "')\" class=myStocks_list_trash /><b>" + val2.value.Symbol + "</b></td>" + 
+											"<td colspan=2 width=100% onClick=\"javascript:getStockGraph('" + val2.value.Symbol + "','" + curr + "', 'candle','" + val.Market + "')\">" + val2.value.Name + "</td>" + 
+										"</tr>" + 
+										"<tr class=myStocks_list_headers onClick=\"javascript:getStockGraph('" + val2.value.Symbol + "','" + curr + "', 'candle','" + val.Market + "')\">" + 
+											"<td>Last Trade</td>" + 
+											"<td width=120px>Change (%)</td>" +
+											"<td width=120px>Open</td>" + 
+										"</tr>" +
+										"<tr class=myStocks_list_data onClick=\"javascript:getStockGraph('" + val2.value.Symbol + "','" + curr + "', 'candle','" + val.Market + "')\">" +
+											"<td>" + curr + val2.value.Data.Price + "</td>" + 
+											"<td style=\"color:" + color + ";\">" + val2.value.Data.ChangePercent + "</td>" + 
+											"<td>" + curr + val2.value.Data.Open + "</td>" + 
+										"</tr>" + 
+										"</table></td></tr>");
+									});
+									odd_even_list("myStocks_object");
+								}
+							});
+						});
+					}
+				});
+			}
+			function putMyStocks(name,symbol,market) {
+				$.ajax({
+					url: "http://83.254.83.56:8001/users/_design/update/_update/update_user/patrik",
+					type: 'post',
+					dataType: 'json',
+					data: '{\"Symbol\":\"' + symbol + '\",\"Market\":\"' + market + '\"}'
+					});
+				$("#alert_wrapper div").html("<b>Added:</b> " + name + ",<br/><b>Symbol:</b> " + symbol + ". <br/>Stock is now visible in you watch list...");
+				$("#alert_wrapper").animate({right:'10px'}, 200);//.show("slide", { direction: "up" }, 200);
+				$("#alert_wrapper").delay(3000).animate({right:'-310px'}, 400);//.hide("slide", { direction: "up" }, 200);
+			}
+			function removeMyStocks(name,symbol,market) {
+				$.ajax({
+					url: "http://83.254.83.56:8001/users/_design/update/_update/delete_symbol/patrik",
+					type: 'post',
+					dataType: 'json',
+					data: '{\"Symbol\":\"' + symbol + '\"}'
+					});
+				var items = $(".myStocks_object td table tr.myStocks_list_name td:nth-child(1)");
+				$.each(items, function(item) {
+					if ($(this).text().indexOf(symbol) === 0) {
+						$(this).parent().parent().parent().parent().hide("slide",{direction: "left"},200);
+					}
+				});
+				remove_odd_even("myStocks_object");
+				$("#alert_wrapper div").html("<b>Symbol:</b> " + symbol + ",<br/>Removed <b>" + name + "</b> from your watch list...");
+				$("#alert_wrapper").animate({right:'10px'}, 200);
+				$("#alert_wrapper").delay(3000).animate({right:'-310px'}, 400);
+				odd_even_list("myStocks_object");
+			}
+		</script>
+		
+		<script type="text/javascript"> // Operate RSS list
+			function getRSS() {
+  				$("#rss_list_nasdaq").rssfeed('http://articlefeeds.nasdaq.com/nasdaq/categories?category=Business&format=xml', {
+    				limit: 20,
+					header: false
+				});
+  				// $('#rss_list_lse').rssfeed('http://www.londonstockexchange.com/exchange/CompanyNewsRSS.html?newsSource=RNR', {
+//     				limit: 20,
+// 					header: false
+// 				});
+  				$('#rss_list_economy').rssfeed('http://articlefeeds.nasdaq.com/nasdaq/categories?category=Economy&format=xml', {
+    				limit: 20,
+					header: false
+				});
+  			}
+		</script>
+		
+		<script type="text/javascript"> // Operate graph area
+			function getIndex(symbol,curr) {
+				$.getJSON("https://script.google.com/macros/s/AKfycbxYQxUl4qTu-1Pz-rNxFOXfRbT87QG7R4lkaYkDe36fDX0LQ-o/exec?stock=" + symbol, function(data) {
+            		var color="";
+					if (data.ChangePercent < 0 ) {
+						color="#a92c28";
+					} else if (data.ChangePercent === 0 ) {
+						color="orange";
+					} else {
+						color="#8eed5f";
+					}
+            		$("#details_banner").html("<b>" + data.Name + "</b><br/>" +
+            						"Change (%): <font style=\"color:" + color + ";\">" + data.ChangePercent + " %</font>");
+            		$("#details_summary").html("<table>" +
+            								"<tr>" + 
+            									"<td><b>Symbol:</b> " + data.Symbol + "</td>" +
+            									"<td colspan=3><b>Timestamp:</b> " + data.TimeStamp + "</td>" +
+            								"</tr>" + 
+            								"<tr>" + 
+            									"<td><b>Open:</b> " + curr + data.Open + "</td>" +
+            									"<td><b>Close:</b> " + curr + data.Close + "</td>" +
+            									"<td><b>High:</b> " + curr + data.High + "</td>" +
+            									"<td><b>Low:</b> " + curr + data.Low + "</td>" +
+            								"</tr>" + 
+            								"<tr>" + 
+            									"<td><b>Last Trade:</b> " + curr + data.LastPrice + "</td>" +
+            									"<td><b>Change:</b> <font style=\"color:" + color + ";\">" + curr + data.Change + "</font></td>" +
+            									"<td><b>Change (%):</b> <font style=\"color:" + color + ";\">" + data.ChangePercent + "</font></td>" +
+            									"<td><b>Volume:</b> " + data.Volume + "</td>" + 
+            								"</tr></td></table>");
+					$.getJSON('https://script.google.com/macros/s/AKfycbxh0NposwJBZNg8sB22ixZZL2auumJtWkF6NYYBzojbdBLAhSA/exec?symbol=' + symbol, function(data2) {
+							$('#details_graph').highcharts('StockChart', {
+			
+								
+   								chart: {
+   									backgroundColor: '#F5F5F5',
+      								plotBackgroundColor: '#F5F5F5',
+      								borderColor: '#F5F5F5',
+      								zoomType: 'xy'
+      							},
+      							colors: [
+   									color
+								],
+	    						navigator: {
+	    							handles: {
+	   							 		backgroundColor: '#F5F5F5',
+	   							 		borderColor: '#222222',
+	   							 		outlineColor: '#222222',
+	    								maskFill: 'rgba(245, 245, 245, 0.75)'
+	   							 	}
+	    						},
+								rangeSelector : {
+									selected : 1,
+									inputBoxBorderColor: '#282828'
+								},
+
+								title : {
+									text : data.Name
+								},
+			
+								series : [{
+									name : data.Name,
+									data : data2,
+									marker : {
+										enabled : true,
+										radius : 3
+									},
+									shadow : true,
+									tooltip : {
+										valueDecimals : 2
+									}
+								}]
+							});
+						$("#alert_wrapper").animate({right:'-310px'}, 400);
+						});
+        		});
+			}
+			function getStockGraph(symbol,curr,chartType,market) {
+				var symbString="\"" + symbol + "\"";
+        		$.getJSON("http://83.254.83.56:8001/" + market + "_stocks/_design/latestData/_view/latestData/?key=" + symbString, function(data) {
+					var row = data.rows[0];
+            		var color="";
+					if (row.value.Data.ChangePercent < 0 ) {
+						color="#a92c28";
+					} else if (row.value.Data.ChangePercent === 0 ) {
+						color="orange";
+					} else {
+						color="#8eed5f";
+					}
+            		$("#details_banner").html("<b>" + row.value.Name + "</b><br/>" +
+            						"Change (%): <font style=\"color:" + color + ";\">" + row.value.Data.ChangePercent + " %</font>");
+            		$("#details_summary").html("<table>" +
+            								"<tr>" + 
+            									"<td><b>Symbol:</b> " + row.value.Symbol + "</td>" +
+            									"<td colspan=3><b>Timestamp:</b> " + row.value.Data.TimeStamp + "</td>" +
+            								"</tr>" + 
+            								"<tr>" + 
+            									"<td><b>Open:</b> " + curr + row.value.Data.Open + "</td>" +
+            									"<td><b>Close:</b> " + curr + row.value.Data.Close + "</td>" +
+            									"<td><b>High:</b> " + curr + row.value.Data.High + "</td>" +
+            									"<td><b>Low:</b> " + curr + row.value.Data.Low + "</td>" +
+            								"</tr>" + 
+            								"<tr>" + 
+            									"<td><b>Last Trade:</b> " + curr + row.value.Data.LastPrice + "</td>" +
+            									"<td><b>Change:</b> <font style=\"color:" + color + ";\">" + curr + row.value.Data.Change + "</font></td>" +
+            									"<td><b>Change (%):</b> <font style=\"color:" + color + ";\">" + row.value.Data.ChangePercent + "</font></td>" +
+            									"<td><b>Volume:</b> " + row.value.Data.Volume + "</td>" + 
+            								"</tr></td></table>");
+            		$("#details_menu").html("<span><a href=\"javascript:getStockGraph('" + row.value.Symbol + "','" + curr + "', 'candle','" + row.value.Market + "')\">Candlestick</a></span><span><a href=\"javascript:getStockGraph('" + row.value.Symbol + "','" + curr + "', 'line','" + row.value.Market + "')\">Line chart</a></span>");
+					if (chartType==='candle') {
+						$.getJSON('http://83.254.83.56:8001/' + market + '_stocks/_design/Chart/_view/candleHistorical?key=\"' + symbol + "\"", function(data2) {
+							
+							$('#details_graph').highcharts('StockChart', {
+			
+								
+   								chart: {
+   									backgroundColor: '#F5F5F5',
+      								plotBackgroundColor: '#F5F5F5',
+      								borderColor: '#F5F5F5',
+      								zoomType: 'xy'
+      							},
+      							colors: [
+   									color
+								],
+	    						navigator: {
+	    							handles: {
+	   							 		backgroundColor: '#F5F5F5',
+	   							 		borderColor: '#222222',
+	   							 		outlineColor: '#222222',
+	    								maskFill: 'rgba(245, 245, 245, 0.75)'
+	   							 	}
+	    						},
+								rangeSelector : {
+									selected : 1
+								},
+
+								title : {
+									text : row.value.Name
+								},
+
+									series : [{
+									type : 'candlestick',
+									name : row.value.Name,
+									data : data2.rows[0].value.Data,
+									dataGrouping : {
+										units : [
+											['week', // unit name
+											[1] // allowed multiples
+										], [
+											'month', 
+											[1, 2, 3, 4, 6]
+											]
+										]
+									}
+								}]
+							});
+					});
+					} else {
+						$.getJSON("http://83.254.83.56:8001/" + market + "_stocks/_design/Chart/_view/lineHistorical?key=" + symbString, function(data2) {
+
+							// Create the chart
+							$('#details_graph').highcharts('StockChart', {
+			
+								
+   								chart: {
+   									backgroundColor: '#F5F5F5',
+      								plotBackgroundColor: '#F5F5F5',
+      								borderColor: '#F5F5F5',
+      								zoomType: 'xy'
+      							},
+      							colors: [
+   									color
+								],
+	    						navigator: {
+	    							handles: {
+	   							 		backgroundColor: '#F5F5F5',
+	   							 		borderColor: '#222222',
+	   							 		outlineColor: '#222222',
+	    								maskFill: 'rgba(245, 245, 245, 0.75)'
+	   							 	}
+	    						},
+								rangeSelector : {
+									selected : 1,
+									inputBoxBorderColor: '#282828'
+								},
+
+								title : {
+									text : data.rows[0].value.Name
+								},
+			
+								series : [{
+									name : data.rows[0].value.Name,
+									data : data2.rows[0].value.Data,
+									marker : {
+										enabled : true,
+										radius : 3
+									},
+									shadow : true,
+									tooltip : {
+										valueDecimals : 2
+									}
+								}]
+							});
+				});
+						//$("#alert_wrapper").animate({right:'-310px'}, 400);
+        			}
+        		});
+			}
+		</script>
+	</head>
+<body>
+	<div id="banner_wrapper" class="layout_divs">
+		<table>
+			<tr height="100%">
+				<td width="300px"><b>Adapa stock watcher</b></td>
+				<td>
+					<a href=javascript:changeList('stock_wrapper')>Stocks</a> - 
+					<a href=javascript:changeList('rss_wrapper')>News</a> - 
+					<a href=javascript:changeList('myStocks_wrapper')>My Stocks</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<!-- Layout etc for ALL STOCKS LIST -->
+	<div id="stock_wrapper" class="layout_divs">
+	
+		<div id="market_selector">
+			<div id=market_selector_div>
+				<select id="market_selector_box" size=1 onChange="javascript:whatMarket()">
+  					<option value="nasdaq">Nasdaq</option>
+					<option selected value="dax">Dax</option>
+  					<option value="lse">London</option>
+				</select>
+			</div>
+			<div id="search_div">
+				<input id=search_field placeholder="Search symbol/company" onkeyup="javascript:filter($(this).val())"/>
+			</div>
+			<div id=filter_div>
+				<b>Show only:</b> <a href="javascript:show_only('1-9')">1-9</a>,
+				<a href="javascript:show_only('A')">A</a>,
+				<a href="javascript:show_only('B')">B</a>,
+				<a href="javascript:show_only('C')">C</a>,
+				<a href="javascript:show_only('D')">D</a>,
+				<a href="javascript:show_only('E')">E</a>,
+				<a href="javascript:show_only('F')">F</a>,
+				<a href="javascript:show_only('G')">G</a>,
+				<a href="javascript:show_only('H')">H</a>,
+				<a href="javascript:show_only('I')">I</a>,
+				<a href="javascript:show_only('J')">J</a>,
+				<a href="javascript:show_only('K')">K</a>,
+				<a href="javascript:show_only('L')">L</a>,
+				<a href="javascript:show_only('M')">M</a>,
+				<a href="javascript:show_only('N')">N</a>,
+				<a href="javascript:show_only('O')">O</a>,
+				<a href="javascript:show_only('P')">P</a>,
+				<a href="javascript:show_only('Q')">Q</a>,
+				<a href="javascript:show_only('R')">R</a>,
+				<a href="javascript:show_only('S')">S</a>,
+				<a href="javascript:show_only('T')">T</a>,
+				<a href="javascript:show_only('U')">U</a>,
+				<a href="javascript:show_only('V')">V</a>,
+				<a href="javascript:show_only('W')">W</a>,
+				<a href="javascript:show_only('X')">X</a>,
+				<a href="javascript:show_only('Y')">Y</a>,
+				<a href="javascript:show_only('Z')">Z</a>,
+				<a href="javascript:show_only('')"><b>Show all</b></a>
+			</div>
+		</div>
+		
+		<div id="stock_list">
+			<table id="stock_table" border="0" cellpadding="0" cellspacing="0">
+				
+			</table>
+		</div>
+  	</div>
+  	
+  	<!-- Layout etc for MY STOCKS -->
+	<div id="myStocks_wrapper">
+		<div id="myStocks_list">
+			<table id="myStocks_table" border="0" cellpadding="0" cellspacing="0">
+				
+			</table>
+		</div>
+	</div>
+	
+  	<!-- Layout etc for RSS FEED -->
+	<div id=rss_wrapper>
+		<div id="rss_list_nasdaq"></div>
+		<!--<div id="rss_list_lse"></div>-->
+		<div id="rss_list_economy"></div>
+	</div>
+	
+	<!-- Layout etc for STOCK DETAILS -->
+	<div id="details_wrapper" class="layout_divs">
+		<div id="details_banner">
+			
+		</div>
+		<div id="details_summary">
+			
+		</div>
+		<div id="details_menu">
+		
+		</div>
+		<div id="details_graph">
+			
+		</div>
+	</div>
+
+	<div id="alert_wrapper"><div id="alert_dialog"><span></span></div></div>
+</body>
+</html>

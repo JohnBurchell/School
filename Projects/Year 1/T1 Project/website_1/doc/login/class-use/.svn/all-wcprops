@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/165/website_1/doc/login/class-use
+END
+connectionManager.html
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/165/website_1/doc/login/class-use/connectionManager.html
+END
+loginDAO.html
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/165/website_1/doc/login/class-use/loginDAO.html
+END
+loginServlet.html
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/165/website_1/doc/login/class-use/loginServlet.html
+END
+logoutServlet.html
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/165/website_1/doc/login/class-use/logoutServlet.html
+END
+loginBean.html
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/165/website_1/doc/login/class-use/loginBean.html
+END

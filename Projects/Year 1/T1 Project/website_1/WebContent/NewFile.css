@@ -1,0 +1,402 @@
+@CHARSET "ISO-8859-1";
+/* ------ Global Body, Font and Link Settings ------ */
+
+body {
+margin: 0;
+	padding: 0;
+	font-family: 'Lucida Grande', Verdana, Arial, sans-serif;
+	color: #pink;
+	font-size: 90%;
+	background-image: url(../image-files/browser-background.jpg);
+	background-repeat: repeat;
+	background-position: center top;
+	background-color: #fff;
+
+}
+
+/* -- General Link Styling -- */
+
+a:link {
+color: #E75A08; 
+}
+
+a:visited {
+color: #A83705;
+}
+
+a:hover {
+color: #FCA649;
+}
+
+
+
+/* ------ Section 2 - Global Page Structure ------- */
+
+#PageWrapper {
+width: 900px;
+}
+
+#Header {
+height: 235px;
+}
+
+#ContentWrapper {
+float: left;
+width: 100%;
+}
+"WebContent/style.css"
+#ContentColumn {
+margin: 0 185px 0 210px;    
+}
+
+#NavColumn {
+float: left;
+width: 179px;               
+margin-left: -880px;        
+}
+
+#ExtraColumn {
+float: left;
+width: 179px;               
+margin-left: -180px;       
+}
+
+#Footer {
+clear: both;
+width: 100%;
+text-align: center;
+padding: 8px 0;
+}
+
+#ContentColumn {
+padding:20px;
+}
+
+.Liner {
+  padding:10px
+}
+#Header .Liner {
+padding: 0;
+}
+
+#Footer .Liner {
+margin: 0;
+padding: 0;
+}
+
+
+
+/* ------  Page Structure Details ------ */
+body { 
+background: url(../image-files/body.jpg) bottom right no-repeat;
+}
+
+#Header {
+background: url(../images/header-image.png) top left no-repeat;
+}
+
+
+
+/* ------ Left Column Navigation ------ */
+
+#NavColumn, #ExtraColumn {
+font-family: Tahoma, sans-serif;
+font-weight:normal;
+font-size:85%;
+}
+
+
+/* -- Navigation Headers -- */
+
+.Navigation h3 {
+padding: 0;
+font-size: 110%;
+border-bottom: 1px solid #fff;
+margin: 12px 0;
+}
+
+/* -- Nav List -- */
+
+.Navigation ul {
+list-style-type: none;
+padding: 0;
+margin: 0;
+}
+
+.Navigation li {
+padding:0;
+margin:0 0 3px 0;
+position:relative;
+}
+
+.Navigation a {
+text-decoration:none;
+width:160px;
+padding:5px;
+display:block;
+border: 1px solid #9E8A7A;
+}
+
+.Navigation a:hover {
+border-color: #DDD3C7;
+}
+
+.Navigation a:visited {
+border-color: #9E8A7A;
+}
+
+
+/* -- Thumbnail-with-Caption Navigation -- */
+
+.ThumbnailLink {
+text-align: center;
+}
+
+.ThumbnailLink a {
+text-decoration: none;
+}
+
+.ThumbnailLink .Caption {
+text-decoration: underline;
+}
+
+/* -- Horizontal Text NavBar -- */
+
+.ExtraNav {
+font-family: Tahoma, sans-serif;
+}
+
+#Header {
+position:relative;
+}
+
+#Header .ExtraNav {
+font-size: 85%;
+position: absolute;
+top: 0;
+right: 0;
+width:176px;
+background:url(../image-files/napkin.jpg) bottom left no-repeat;
+padding:10px 0 45px 30px;
+}
+
+#Footer .ExtraNav {
+margin: 12px auto;
+}
+
+.ExtraNav ul {
+list-style-type: none;
+padding: 0;
+margin: 0;
+}
+
+.ExtraNav ul li {
+text-align: center;
+}
+
+#Footer .ExtraNav ul li {
+display: inline;
+}
+
+.ExtraNav a {
+text-decoration: none;
+text-align: center;
+padding: 0 4px;
+}
+
+.ExtraNav a:visited {
+text-decoration: none;
+}
+
+.ExtraNav a:hover {
+text-decoration: underline;
+}
+
+#Header .ExtraNav ul li{
+  text-align:left;
+}
+#Header .ExtraNav ul li {
+  margin: 5px 0;
+}
+
+
+/* ------ Specific Font Styles ------ */
+
+#Footer {
+font-size: 85%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+font-family:tahoma, sans-serif;
+color: #9E8A7A;
+clear: both;
+font-weight:normal;
+}
+
+h2, h3, h4, h5, h6 {
+margin-top: 24px;
+}
+
+#ContentColumn h1, 
+#ContentColumn h2,
+#ContentColumn h3,
+#ContentColumn h4,
+#ContentColumn h5,
+#ContentColumn h6 {
+font-family: 'Century Gothic', Tahoma, sans-serif;
+}
+
+h1 {
+font-weight:normal;
+margin-top: 5px;
+text-align: center;
+}
+
+.Caption {
+font-size: 85%;
+font-weight: bold;
+display: block;
+}
+
+blockquote {
+margin: 12px 56px;
+color: #006;
+font-size: 100%;
+font-family: 'Courier New', Courier, monospace;
+}
+
+
+
+/* ------ Section 7 - Boxes ------ */
+
+.CalloutBox, .ReminderBox {
+font-family:tahoma, sans-serif;
+font-size:90%;
+}
+
+.CalloutBox {
+background-color: #DDD3C7;
+width: 80%;
+margin: 18px auto 24px auto;
+padding: 8px;
+color: #4D4D4D;
+}
+
+.CalloutBox p {
+margin: 8px;
+font-size: 95%;
+}
+
+.ReminderBox {           /* the container box */
+background-color: #FFF;
+width: 24%;
+border: 3px solid #9E8A7A;
+margin: 0 0 12px 18px;
+float: right;             /* adding float enables text to flow around it */
+color: #707070;
+padding: 0 4px;
+}
+
+.ReminderBox h4 {
+margin: 0;
+padding: 2px;
+text-align: center;
+background-color: #FFF;
+}
+
+
+.AdSenseBoxLeft, .AdSenseBoxRight, .AdSenseBoxCenter468, .AdSenseBoxExtraColumn {
+padding: 5px;
+}
+
+.AdSenseBoxLeft {
+float: left;
+margin-right:8px;
+}
+
+.AdSenseBoxRight {
+margin: 0 18px 12px 18px;
+float: right;
+}
+
+.AdSenseBoxCenter468 {
+width: 468px;
+margin: 0 auto 12px auto;
+clear: both;
+}
+
+.AdSenseBoxExtraColumn {
+padding: 0;
+margin: 0 auto 12px auto;
+clear: both;
+}
+
+.ReturnToNavBox {
+border-top: 1px solid #8F8FB3;
+border-bottom: 1px solid #8F8FB3;
+margin: 12px auto;
+padding: 0 2px;
+}
+
+/* -- RSS Box -- */
+
+#RSSbox {
+width:170px;
+margin: 20px 0;
+padding: 0 0 10px 0;
+font-weight: bold;
+color: #707070;
+text-align: center;
+}
+
+
+
+/* ------ Section 8 - Frequently Used Styles ------ */
+
+.Clear {
+clear: both;
+}
+
+img {
+border: 0;
+}
+
+/* -- lists -- */
+
+#ContentColumn ul {
+list-style-type: disc;
+margin: 0 0 8px 10px;
+}
+
+#ContentColumn ol {
+list-style-type: decimal;
+margin: 0 0 8px 10px;
+}
+
+#ContentColumn li {
+margin: 0 0 8px 5px;
+}
+
+/* -- floats -- */
+
+.ItemRight {
+float: right;
+margin: 2px 0 12px 18px;
+text-align: center;
+}
+
+.ItemCenter {
+margin: 2px auto 12px auto;
+text-align: center;
+clear: both;
+}
+
+.ItemLeft {
+float: left;
+margin: 2px 18px 12px 0;
+text-align: center;
+}
+
+.Center { 
+text-align: center;
+}

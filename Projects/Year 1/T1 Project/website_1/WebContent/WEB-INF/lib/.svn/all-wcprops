@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib
+END
+guava-r07.jar
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib/guava-r07.jar
+END
+icu4j-4_0_1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib/icu4j-4_0_1.jar
+END
+commons-lang-2.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib/commons-lang-2.4.jar
+END
+shiro-core-1.2.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib/shiro-core-1.2.1.jar
+END
+visualization-datasource-1.1.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib/visualization-datasource-1.1.1.jar
+END
+opencsv-1.8.jar
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib/opencsv-1.8.jar
+END
+mysql-connector-java-5.1.22-bin.jar
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/110/website_1/WebContent/WEB-INF/lib/mysql-connector-java-5.1.22-bin.jar
+END
+shiro-web-1.2.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib/shiro-web-1.2.1.jar
+END
+jstl-1.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/62/website_1/WebContent/WEB-INF/lib/jstl-1.2.jar
+END
+visualization-datasource-1.1.1-src.jar
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib/visualization-datasource-1.1.1-src.jar
+END
+commons-logging-1.1.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/117/website_1/WebContent/WEB-INF/lib/commons-logging-1.1.1.jar
+END

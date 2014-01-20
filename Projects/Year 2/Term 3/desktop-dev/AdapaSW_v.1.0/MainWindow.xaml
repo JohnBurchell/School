@@ -1,0 +1,206 @@
+﻿<Window x:Class="WpfApp_Prototype_v._2._0.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WpfApp_Prototype_v._2._0"
+        Title="Adapa Stocks">
+    <Window.Resources>
+        <local:ColorConverter x:Key="colConv" />
+        <local:Dbl2Dec x:Key="dbl2Dec" />
+        <local:Dbl0Dec x:Key="dbl0Dec" />
+        <local:DblPerc x:Key="dblPerc" />
+        <Style x:Key="AlternatingListViewItemStyle" TargetType="{x:Type ListViewItem}">
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="#282828"></Setter>
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#404040"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <DockPanel Margin="3">
+
+            <!--Menu bar-->
+
+            <Grid DockPanel.Dock="Top">
+                <Menu Margin="3" Height="40">
+                    <MenuItem Header="My Stocks" Click="mnuMyStocks_Click" FontFamily="Century Gothic" FontSize="18" Height="40"/>
+                    <MenuItem Header="|" FontFamily="Century Gothic" FontSize="22" IsEnabled="False"/>
+                    <MenuItem Header="Markets" FontFamily="Century Gothic" FontSize="18" Height="40">
+                        <MenuItem Click="mnuNasdaq_Click">
+                            <MenuItem.Header>
+                                <Image Width="140" Height="40" Source="nasdaq.png"/>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Click="mnuLse_Click">
+                            <MenuItem.Header>
+                                <Image Width="140" Height="40" Source="lse.png"></Image>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Click="mnuDax_Click">
+                            <MenuItem.Header>
+                                <Image Width="90" Height="40" Source="dax.jpg"></Image>
+                            </MenuItem.Header>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="|" FontFamily="Century Gothic" FontSize="22" IsEnabled="False"/>
+                    <MenuItem Header="News" FontSize="18" FontFamily="Century Gothic" Visibility="Hidden"/>
+                </Menu>
+            </Grid>
+
+            <!--List of Stocks-->
+            <Grid Width="280">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" Name="txtFilter" TextChanged="txtFilter_TextChanged"></TextBox>
+                <ListView Grid.Row="1" Name="lvItems" Width="280" HorizontalAlignment="Left" ItemContainerStyle="{StaticResource AlternatingListViewItemStyle}"
+ AlternationCount="2" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="lvItems_SelectionChanged" SelectedIndex="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel Orientation="Vertical" Margin="3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" Height="25" >
+                                            <TextBlock Text="{Binding Symbol}" FontFamily="Calibri" FontWeight="Bold" FontSize="16" Foreground="White" Padding="5.2"/>
+                                            <TextBlock Text="{Binding Market}" FontFamily="Calibri" FontWeight="Bold" FontSize="10" Foreground="White"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Text="{Binding Name}" TextTrimming="CharacterEllipsis" Padding="5.2" FontFamily="Calibri" FontSize="16" Foreground="#FFCBCBCB"/>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="1*"></RowDefinition>
+                                            <RowDefinition Height="1*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Column="0" Grid.Row="0" Content="Last Trade" FontFamily="Century Gothic" FontSize="10" Foreground="#FFCBCBCB"/>
+                                        <Label Grid.Column="1" Grid.Row="0" Content="Change (%)" FontFamily="Century Gothic" FontSize="10" Foreground="#FFCBCBCB"/>
+                                        <Label Grid.Column="2" Grid.Row="0" Content="Open" FontFamily="Century Gothic" FontSize="10" Foreground="#FFCBCBCB"/>
+                                        <Label Grid.Column="0" Grid.Row="1" Content="{Binding Data.Price, Converter={StaticResource dbl2Dec}}" FontFamily="Century Gothic" FontWeight="Bold" Foreground="White"/>
+                                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Data.Change, Converter={StaticResource dbl2Dec}}" FontFamily="Century Gothic" FontWeight="Bold" Foreground="{Binding Data.Change, Converter={StaticResource colConv}}" Padding="5.2"/>
+                                            <TextBlock Text="{Binding Data.ChangePercent, Converter={StaticResource dblPerc}}" FontFamily="Century Gothic" FontWeight="Bold" Foreground="{Binding Data.ChangePercent, Converter={StaticResource colConv}}" Padding="5.2"/>
+                                        </StackPanel>
+                                        <Label Grid.Column="2" Grid.Row="1" Content="{Binding Data.Open, Converter={StaticResource dbl2Dec}}" FontFamily="Century Gothic" FontWeight="Bold" Foreground="White"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <!--Detailed view element-->
+            <Grid DockPanel.Dock="Right" DataContext="{Binding ElementName=lvItems, Path=SelectedItem}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="65"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!--<StackPanel Name="splStockInfo" DockPanel.Dock="Right" DataContext="{Binding ElementName=lvItems, Path=SelectedItem}">-->
+                <Grid Grid.Row="0">
+                    <StackPanel>
+                        <DockPanel>
+                            <Label DockPanel.Dock="Left" Content="{Binding Symbol}" FontFamily="Calibri" FontWeight="Bold" FontSize="24" Height="35"/>
+                            <Label DockPanel.Dock="Right" Content="{Binding Data.TimeStamp}" FontFamily="Calibri" FontWeight="Bold" FontSize="12"/>
+                            <Label DockPanel.Dock="Right" Content="Updated:" FontFamily="Calibri" FontWeight="Bold" FontSize="12"></Label>
+                            <Label DockPanel.Dock="Right"></Label>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label DockPanel.Dock="Left" Content="{Binding Market}" FontFamily="Calibri" FontWeight="Bold" FontSize="14"/>
+                            <Label DockPanel.Dock="Left" Content="|" FontFamily="Calibri" FontSize="14"/>
+                            <Label DockPanel.Dock="Left" Content="{Binding Name}" FontFamily="Calibri" FontSize="14"/>
+                            <Button DockPanel.Dock="Right" Name="btnDelete" Click="btnDelete_Click" BorderBrush="{x:Null}" Background="{x:Null}">
+                                <Button.Content>
+                                    <Image Source="remove.png" Width="30"></Image>
+                                </Button.Content>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Name="btnAdd" Click="btnAdd_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                                <Button.Content>
+                                    <Image Source="add.png" Width="30"></Image>
+                                </Button.Content>
+                            </Button>
+                            <Label DockPanel.Dock="Left"></Label>
+                        </DockPanel>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1" Width="600" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="1.8*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Last Trade" FontFamily="Calibri" Foreground="#FF959595" FontWeight="Bold" FontSize="12"/>
+                    <Label Grid.Column="1" Grid.Row="0" Content="Change (%)" FontFamily="Calibri" Foreground="#FF959595" FontWeight="Bold" FontSize="12"/>
+                    <Label Grid.Column="2" Grid.Row="0" Content="High" FontFamily="Calibri" Foreground="#FF959595" FontWeight="Bold" FontSize="12"/>
+                    <Label Grid.Column="3" Grid.Row="0" Content="Low" FontFamily="Calibri" Foreground="#FF959595" FontWeight="Bold" FontSize="12"/>
+                    <Label Grid.Column="4" Grid.Row="0" Content="Open" FontFamily="Calibri" Foreground="#FF959595" FontWeight="Bold" FontSize="12"/>
+                    <Label Grid.Column="5" Grid.Row="0" Content="Volume" FontFamily="Calibri" Foreground="#FF959595" FontWeight="Bold" FontSize="12"/>
+
+                    <Label Grid.Column="0" Grid.Row="1" Content="{Binding Data.Price, Converter={StaticResource dbl2Dec}}" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+                    <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock Text="{Binding Data.Change, Converter={StaticResource dbl2Dec}}" FontFamily="Century Gothic" FontWeight="Bold" Foreground="{Binding Data.Change, Converter={StaticResource colConv}}" Padding="5.2" FontSize="16"/>
+                        <TextBlock Text="{Binding Data.ChangePercent, Converter={StaticResource dblPerc}}" FontFamily="Century Gothic" FontWeight="Bold" Foreground="{Binding Data.ChangePercent, Converter={StaticResource colConv}}" Padding="5.2" FontSize="16"/>
+                    </StackPanel>
+                    <Label Grid.Column="2" Grid.Row="1" Content="{Binding Data.High, Converter={StaticResource dbl2Dec}}" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+                    <Label Grid.Column="3" Grid.Row="1" Content="{Binding Data.Low, Converter={StaticResource dbl2Dec}}" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+                    <Label Grid.Column="4" Grid.Row="1" Content="{Binding Data.Open, Converter={StaticResource dbl2Dec}}" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+                    <Label Grid.Column="5" Grid.Row="1" Content="{Binding Data.Volume, Converter={StaticResource dbl0Dec}}" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+                </Grid>
+                
+                <!--Rss Feed-->
+                <Grid Grid.Row="2" Name="grdRssFeed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="250"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <XmlDataProvider x:Key="rssData" XPath="//item" Source="http://articlefeeds.nasdaq.com/nasdaq/categories?category=US+Markets"/>
+                    </Grid.Resources>
+                    <Grid Grid.Column="0">
+                        <WebBrowser Name="wbChart"/>
+                    </Grid>
+                    
+                    
+                    <ListBox x:Name="lstRss" Grid.Column="1" ItemsSource="{Binding Source={StaticResource rssData}}" 
+                 SelectedIndex="0" Background="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                    <!--<Image Width="20" Margin="3" Source="{Binding XPath=enclosure/@url}" />-->
+                                    <StackPanel Orientation="Vertical" Width="240">
+                                        <TextBlock>
+                                            <Hyperlink Name="linkGoToArticle" Tag="{Binding XPath=link, Path=InnerText}"
+                                                       Click="linkGoToArticle_Click" ToolTip="{Binding XPath=title, Path=InnerText}">
+                                                <TextBlock FontSize="12" FontWeight="Bold" Text="{Binding XPath=title, Path=InnerText}" TextTrimming="WordEllipsis"/>
+                                            </Hyperlink>
+                                        </TextBlock>
+                                        <TextBlock Opacity="0.72" Text="{Binding XPath=pubDate}" FontSize="10" />
+                                        <TextBlock FontStyle="Italic" MaxHeight="40" Text="{Binding XPath=description, Path=InnerText}" TextWrapping="Wrap" TextTrimming="WordEllipsis"/>
+                                    </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+                <!--</StackPanel>-->
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,41 @@
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\bin\Debug\WpfApp_Prototype_v.2.0.exe.config
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\bin\Debug\WpfApp_Prototype_v.2.0.exe.manifest
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\bin\Debug\WpfApp_Prototype_v.2.0.application
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\bin\Debug\WpfApp_Prototype_v.2.0.exe
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\bin\Debug\WpfApp_Prototype_v.2.0.pdb
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\AdapaSW_v.1.0.csprojResolveAssemblyReference.cache
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\MainWindow.g.cs
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\App.g.cs
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\WpfApp_Prototype_v.2.0_MarkupCompile.cache
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\WpfApp_Prototype_v.2.0_MarkupCompile.lref
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\MainWindow.baml
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\WpfApp_Prototype_v.2.0.g.resources
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\WpfApp_Prototype_v._2._0.Properties.Resources.resources
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\AdapaSW_v.1.0.csproj.GenerateResource.Cache
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\WpfApp_Prototype_v.2.0.exe.manifest
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\WpfApp_Prototype_v.2.0.application
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\WpfApp_Prototype_v.2.0.exe
+C:\Users\Nico\Documents\Visual Studio 2012\Projects\WpfApp_Prototype_v.2.0\WpfApp_Prototype_v.2.0\obj\Debug\WpfApp_Prototype_v.2.0.pdb
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\bin\Debug\AdapaSW_v.1.0.exe.config
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\bin\Debug\AdapaSW_v.1.0.exe.manifest
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\bin\Debug\AdapaSW_v.1.0.application
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\bin\Debug\AdapaSW_v.1.0.exe
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\bin\Debug\AdapaSW_v.1.0.pdb
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\AdapaSW_v.1.0.csprojResolveAssemblyReference.cache
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\MainWindow.g.cs
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\App.g.cs
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\AdapaSW_v.1.0_MarkupCompile.cache
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\AdapaSW_v.1.0_MarkupCompile.lref
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\MainWindow.baml
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\AdapaSW_v.1.0.g.resources
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\WpfApp_Prototype_v._2._0.Properties.Resources.resources
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\AdapaSW_v.1.0.csproj.GenerateResource.Cache
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\AdapaSW_v.1.0.exe.manifest
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\AdapaSW_v.1.0.application
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\AdapaSW_v.1.0.exe
+C:\Users\Nico\Documents\adapaterm3projectgit\desktop-dev\AdapaSW_v.1.0\obj\Debug\AdapaSW_v.1.0.pdb
