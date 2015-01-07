@@ -32,12 +32,23 @@ B.~Kitchenham and S.~L. Pfleeger, ``Principles of survey research part 6: data
   analysis,'' \emph{ACM SIGSOFT Software Engineering Notes}, vol.~28, no.~2,
   pp. 24--27, 2003.
 
+\bibitem{orlikowski1997imporvisational}
+W.~Orlikowski and D.~Hoffman, ``An imporvisational model for change managment:
+  The case of groupware technologies,'' \emph{Inventing the Organizations of
+  the 21st Century, MIT, Boston, MA}, pp. 265--282, 1997.
+
+\bibitem{weinberg1997quality}
+G.~M. Weinberg, ``Quality software management: Anticipating change (vol. 4),''
+  \emph{Dorset House, New York}, 1997.
+
 \bibitem{klein1996challenge}
 K.~J. Klein and J.~S. Sorra, ``The challenge of innovation implementation,''
   \emph{Academy of management review}, vol.~21, no.~4, pp. 1055--1080, 1996.
 
-\bibitem{kotter1995leading}
-J.~P. Kotter, ``Leading change: Why transformation efforts fail,''
-  \emph{Harvard business review}, vol.~73, no.~2, pp. 59--67, 1995.
+\bibitem{orlikowski1992changing}
+W.~J. Orlikowski, D.~C. Gash \emph{et~al.}, \emph{Changing frames:
+  Understanding technological change in organizations}.\hskip 1em plus 0.5em
+  minus 0.4em\relax Center for Information Systems Research, Sloan School of
+  Management, Massachusetts Institute of Technology, 1992.
 
 \end{thebibliography}
